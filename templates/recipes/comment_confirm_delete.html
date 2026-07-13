@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление комментария - Каталог рецептов{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="content-panel p-4">
+            <h1 class="h3 mb-3">Удалить комментарий?</h1>
+            <p class="text-secondary">Рецепт: <a href="{{ comment.recipe.get_absolute_url }}">{{ comment.recipe.title }}</a></p>
+            <blockquote class="border-start border-success ps-3 text-secondary">{{ comment.text }}</blockquote>
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger" type="submit">Удалить</button>
+                    <a class="btn btn-outline-secondary" href="{{ comment.recipe.get_absolute_url }}">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

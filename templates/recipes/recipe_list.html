@@ -17,10 +17,26 @@
     <a class="btn btn-outline-success" href="{% url 'home' %}#categories">Смотреть категории</a>
 </div>
 
+<form class="row g-2 mb-3" method="get" action="{% if current_category %}{{ current_category.get_absolute_url }}{% else %}{% url 'recipe_list' %}{% endif %}">
+    <div class="col-md-9">
+        <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Поиск по названию, описанию или ингредиентам" aria-label="Поиск рецептов">
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-success w-100" type="submit">Искать</button>
+    </div>
+</form>
+
+{% if query %}
+    <div class="alert alert-light border d-flex flex-column flex-md-row justify-content-between gap-2 align-items-md-center">
+        <span>Результаты поиска по запросу: <strong>{{ query }}</strong></span>
+        <a class="btn btn-sm btn-outline-secondary" href="{% if current_category %}{{ current_category.get_absolute_url }}{% else %}{% url 'recipe_list' %}{% endif %}">Сбросить</a>
+    </div>
+{% endif %}
+
 <div class="category-filter d-flex flex-wrap gap-2 mb-4">
-    <a class="btn btn-sm {% if current_category %}btn-outline-success{% else %}btn-success{% endif %}" href="{% url 'recipe_list' %}">Все</a>
+    <a class="btn btn-sm {% if current_category %}btn-outline-success{% else %}btn-success{% endif %}" href="{% url 'recipe_list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">Все</a>
     {% for category in categories %}
-        <a class="btn btn-sm {% if current_category == category %}btn-success{% else %}btn-outline-success{% endif %}" href="{{ category.get_absolute_url }}">
+        <a class="btn btn-sm {% if current_category == category %}btn-success{% else %}btn-outline-success{% endif %}" href="{{ category.get_absolute_url }}{% if query %}?q={{ query|urlencode }}{% endif %}">
             {{ category.name }}
         </a>
     {% endfor %}
@@ -47,7 +63,7 @@
         </div>
     {% empty %}
         <div class="col">
-            <div class="alert alert-info">Рецепты пока не добавлены.</div>
+            <div class="alert alert-info">Рецепты не найдены.</div>
         </div>
     {% endfor %}
 </div>
@@ -57,7 +73,7 @@
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                    <a class="page-link" href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Назад</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Назад</span></li>
@@ -70,14 +86,14 @@
                     </li>
                 {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                        <a class="page-link" href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}page={{ page_number }}">{{ page_number }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                    <a class="page-link" href="?{% if query %}q={{ query|urlencode }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Вперед</a>
                 </li>
             {% else %}
                 <li class="page-item disabled"><span class="page-link">Вперед</span></li>

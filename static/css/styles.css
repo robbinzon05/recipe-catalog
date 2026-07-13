@@ -1,9 +1,27 @@
 body {
-    background-color: #f8f9fa;
+    background: #f6f7f4;
+    color: #212529;
 }
 
 .navbar-brand {
     letter-spacing: 0;
+}
+
+.nav-link {
+    border-radius: 6px;
+}
+
+.nav-link:focus-visible,
+.btn:focus-visible,
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.18);
+}
+
+.content-panel {
+    background: #fff;
+    border: 1px solid rgba(33, 37, 41, 0.12);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(33, 37, 41, 0.05);
 }
 
 .home-hero {
@@ -17,21 +35,32 @@ body {
 .category-card,
 .recipe-card {
     border-radius: 8px;
+    overflow: hidden;
 }
 
 .category-card {
     color: inherit;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .category-card:hover {
     border-color: #198754;
     box-shadow: 0 8px 24px rgba(25, 135, 84, 0.12);
+    transform: translateY(-2px);
+}
+
+.recipe-card {
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.recipe-card:hover {
+    box-shadow: 0 10px 26px rgba(33, 37, 41, 0.1);
+    transform: translateY(-2px);
 }
 
 .recipe-card-placeholder {
     min-height: 180px;
-    background: linear-gradient(135deg, #eef7f1, #fff3cd);
+    background: linear-gradient(135deg, #eef7f1, #fff8e1);
     color: #198754;
     font-weight: 600;
 }
@@ -50,10 +79,36 @@ body {
 
 .recipe-detail-placeholder {
     min-height: 320px;
-    background: linear-gradient(135deg, #eef7f1, #fff3cd);
+    background: linear-gradient(135deg, #eef7f1, #fff8e1);
     color: #198754;
     font-size: 1.25rem;
     font-weight: 600;
+}
+
+.badge {
+    border-radius: 6px;
+}
+
+.form-control {
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: #198754;
+}
+
+.list-group-item {
+    background-color: transparent;
+}
+
+.breadcrumb a,
+.content-panel a {
+    color: #198754;
+}
+
+.breadcrumb a:hover,
+.content-panel a:hover {
+    color: #146c43;
 }
 
 .page-link {
@@ -64,4 +119,14 @@ body {
 .page-link.active {
     background-color: #198754;
     border-color: #198754;
+}
+
+@media (max-width: 575.98px) {
+    .recipe-card-image {
+        height: 190px;
+    }
+
+    .recipe-detail-placeholder {
+        min-height: 220px;
+    }
 }

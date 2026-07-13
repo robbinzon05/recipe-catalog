@@ -11,7 +11,7 @@
     </ol>
 </nav>
 
-<article class="bg-white border rounded-3 overflow-hidden mb-4">
+<article class="content-panel overflow-hidden mb-4">
     {% if recipe.image %}
         <img src="{{ recipe.image.url }}" class="recipe-detail-image w-100" alt="{{ recipe.title }}">
     {% else %}
@@ -29,7 +29,7 @@
 
 <div class="row g-4 mb-4">
     <div class="col-lg-5">
-        <section class="bg-white border rounded-3 p-4 h-100">
+        <section class="content-panel p-4 h-100">
             <h2 class="h4 mb-3">Ингредиенты</h2>
             <ul class="list-group list-group-flush">
                 {% for ingredient in ingredients %}
@@ -41,7 +41,7 @@
         </section>
     </div>
     <div class="col-lg-7">
-        <section class="bg-white border rounded-3 p-4 h-100">
+        <section class="content-panel p-4 h-100">
             <h2 class="h4 mb-3">Шаги приготовления</h2>
             <ol class="list-group list-group-numbered list-group-flush">
                 {% for step in cooking_steps %}
@@ -54,10 +54,28 @@
     </div>
 </div>
 
-<section class="bg-white border rounded-3 p-4">
+<section class="content-panel p-4">
     <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
         <h2 class="h4 mb-0">Комментарии</h2>
         <span class="badge text-bg-light">{{ comments|length }}</span>
+    </div>
+
+    <div class="mb-4">
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ comment_form.text.id_for_label }}">{{ comment_form.text.label }}</label>
+                    {{ comment_form.text }}
+                    {{ comment_form.text.errors }}
+                </div>
+                <button class="btn btn-success" type="submit">Добавить комментарий</button>
+            </form>
+        {% else %}
+            <div class="alert alert-light border mb-0">
+                Чтобы оставить комментарий, <a href="{% url 'login' %}">войдите в систему</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>.
+            </div>
+        {% endif %}
     </div>
 
     {% for comment in comments %}
@@ -67,6 +85,12 @@
                 <span class="text-secondary small">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
             </div>
             <p class="mb-0">{{ comment.text }}</p>
+            {% if user.is_authenticated and comment.author == user or user.is_staff %}
+                <div class="d-flex gap-2 mt-2">
+                    <a class="btn btn-sm btn-outline-success" href="{% url 'comment_edit' comment.pk %}">Редактировать</a>
+                    <a class="btn btn-sm btn-outline-danger" href="{% url 'comment_delete' comment.pk %}">Удалить</a>
+                </div>
+            {% endif %}
         </div>
     {% empty %}
         <p class="text-secondary mb-0">Комментариев пока нет.</p>
