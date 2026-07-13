@@ -11,14 +11,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
-            <a class="navbar-brand fw-semibold" href="#">Каталог рецептов</a>
+            <a class="navbar-brand fw-semibold" href="{% url 'home' %}">Каталог рецептов</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Переключить навигацию">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Рецепты</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Категории</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'recipe_list' %}">Рецепты</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}#categories">Категории</a></li>
                     {% if user.is_authenticated %}
                         {% if user.is_staff %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Админка</a></li>

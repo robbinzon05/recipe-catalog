@@ -5,3 +5,38 @@ body {
 .navbar-brand {
     letter-spacing: 0;
 }
+
+.home-hero {
+    box-shadow: 0 12px 32px rgba(33, 37, 41, 0.08);
+}
+
+.hero-panel {
+    background: #eef7f1;
+}
+
+.category-card,
+.recipe-card {
+    border-radius: 8px;
+}
+
+.recipe-card-placeholder {
+    min-height: 180px;
+    background: linear-gradient(135deg, #eef7f1, #fff3cd);
+    color: #198754;
+    font-weight: 600;
+}
+
+.recipe-card-image {
+    height: 220px;
+    object-fit: cover;
+}
+
+.page-link {
+    color: #198754;
+}
+
+.active > .page-link,
+.page-link.active {
+    background-color: #198754;
+    border-color: #198754;
+}
