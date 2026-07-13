@@ -19,6 +19,16 @@ body {
     border-radius: 8px;
 }
 
+.category-card {
+    color: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.category-card:hover {
+    border-color: #198754;
+    box-shadow: 0 8px 24px rgba(25, 135, 84, 0.12);
+}
+
 .recipe-card-placeholder {
     min-height: 180px;
     background: linear-gradient(135deg, #eef7f1, #fff3cd);
@@ -29,6 +39,21 @@ body {
 .recipe-card-image {
     height: 220px;
     object-fit: cover;
+}
+
+.recipe-detail-image {
+    max-height: 560px;
+    object-fit: contain;
+    background-color: #f1f5f3;
+    border-radius: 8px 8px 0 0;
+}
+
+.recipe-detail-placeholder {
+    min-height: 320px;
+    background: linear-gradient(135deg, #eef7f1, #fff3cd);
+    color: #198754;
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 .page-link {

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recipe.title }} - Каталог рецептов{% endblock %}
+
+{% block content %}
+<nav aria-label="Навигационная цепочка" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Главная</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'recipe_list' %}">Рецепты</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ recipe.title }}</li>
+    </ol>
+</nav>
+
+<article class="bg-white border rounded-3 overflow-hidden mb-4">
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" class="recipe-detail-image w-100" alt="{{ recipe.title }}">
+    {% else %}
+        <div class="recipe-detail-placeholder d-flex align-items-center justify-content-center">
+            <span>{{ recipe.category.name }}</span>
+        </div>
+    {% endif %}
+
+    <div class="p-4 p-lg-5">
+        <span class="badge text-bg-success mb-3">{{ recipe.category.name }}</span>
+        <h1 class="display-6 fw-bold mb-3">{{ recipe.title }}</h1>
+        <p class="lead text-secondary mb-0">{{ recipe.description }}</p>
+    </div>
+</article>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-5">
+        <section class="bg-white border rounded-3 p-4 h-100">
+            <h2 class="h4 mb-3">Ингредиенты</h2>
+            <ul class="list-group list-group-flush">
+                {% for ingredient in ingredients %}
+                    <li class="list-group-item px-0">{{ ingredient }}</li>
+                {% empty %}
+                    <li class="list-group-item px-0 text-secondary">Ингредиенты не указаны.</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+    <div class="col-lg-7">
+        <section class="bg-white border rounded-3 p-4 h-100">
+            <h2 class="h4 mb-3">Шаги приготовления</h2>
+            <ol class="list-group list-group-numbered list-group-flush">
+                {% for step in cooking_steps %}
+                    <li class="list-group-item px-0">{{ step }}</li>
+                {% empty %}
+                    <li class="list-group-item px-0 text-secondary">Шаги приготовления не указаны.</li>
+                {% endfor %}
+            </ol>
+        </section>
+    </div>
+</div>
+
+<section class="bg-white border rounded-3 p-4">
+    <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+        <h2 class="h4 mb-0">Комментарии</h2>
+        <span class="badge text-bg-light">{{ comments|length }}</span>
+    </div>
+
+    {% for comment in comments %}
+        <div class="border-top py-3">
+            <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+                <strong>{{ comment.author.username }}</strong>
+                <span class="text-secondary small">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+            </div>
+            <p class="mb-0">{{ comment.text }}</p>
+        </div>
+    {% empty %}
+        <p class="text-secondary mb-0">Комментариев пока нет.</p>
+    {% endfor %}
+</section>
+{% endblock %}

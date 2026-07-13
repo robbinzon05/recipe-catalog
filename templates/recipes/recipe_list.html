@@ -6,10 +6,24 @@
 <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 mb-4">
     <div>
         <p class="text-success fw-semibold mb-1">Каталог</p>
-        <h1 class="h2 mb-1">Все рецепты</h1>
-        <p class="text-secondary mb-0">Выберите блюдо и откройте подробную карточку рецепта.</p>
+        {% if current_category %}
+            <h1 class="h2 mb-1">{{ current_category.name }}</h1>
+            <p class="text-secondary mb-0">{{ current_category.description }}</p>
+        {% else %}
+            <h1 class="h2 mb-1">Все рецепты</h1>
+            <p class="text-secondary mb-0">Выберите блюдо и откройте подробную карточку рецепта.</p>
+        {% endif %}
     </div>
     <a class="btn btn-outline-success" href="{% url 'home' %}#categories">Смотреть категории</a>
+</div>
+
+<div class="category-filter d-flex flex-wrap gap-2 mb-4">
+    <a class="btn btn-sm {% if current_category %}btn-outline-success{% else %}btn-success{% endif %}" href="{% url 'recipe_list' %}">Все</a>
+    {% for category in categories %}
+        <a class="btn btn-sm {% if current_category == category %}btn-success{% else %}btn-outline-success{% endif %}" href="{{ category.get_absolute_url }}">
+            {{ category.name }}
+        </a>
+    {% endfor %}
 </div>
 
 <div class="row g-4">
@@ -27,7 +41,7 @@
                     <span class="badge text-bg-success align-self-start mb-2">{{ recipe.category.name }}</span>
                     <h2 class="h5 card-title">{{ recipe.title }}</h2>
                     <p class="card-text text-secondary">{{ recipe.description|truncatechars:130 }}</p>
-                    <a class="btn btn-success mt-auto disabled" aria-disabled="true" href="#">Подробнее</a>
+                    <a class="btn btn-success mt-auto" href="{{ recipe.get_absolute_url }}">Подробнее</a>
                 </div>
             </article>
         </div>
