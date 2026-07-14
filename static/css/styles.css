@@ -7,6 +7,13 @@ body {
     letter-spacing: 0;
 }
 
+.brand-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
 .nav-link {
     border-radius: 6px;
 }
