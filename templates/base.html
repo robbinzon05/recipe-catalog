@@ -23,6 +23,7 @@
                         {% if user.is_staff %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Админка</a></li>
                         {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Личный кабинет</a></li>
                         <li class="nav-item"><span class="navbar-text text-white-50 px-2">{{ user.username }}</span></li>
                         <li class="nav-item">
                             <form class="d-inline" action="{% url 'logout' %}" method="post">

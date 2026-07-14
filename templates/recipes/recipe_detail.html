@@ -24,6 +24,20 @@
         <span class="badge text-bg-success mb-3">{{ recipe.category.name }}</span>
         <h1 class="display-6 fw-bold mb-3">{{ recipe.title }}</h1>
         <p class="lead text-secondary mb-0">{{ recipe.description }}</p>
+        <div class="mt-4">
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'toggle_saved_recipe' recipe.slug %}">
+                    {% csrf_token %}
+                    {% if user in recipe.saved_by.all %}
+                        <button class="btn btn-outline-success" type="submit">Удалить из сохраненных</button>
+                    {% else %}
+                        <button class="btn btn-success" type="submit">Сохранить рецепт</button>
+                    {% endif %}
+                </form>
+            {% else %}
+                <a class="btn btn-outline-success" href="{% url 'login' %}?next={{ request.path|urlencode }}">Войти, чтобы сохранить</a>
+            {% endif %}
+        </div>
     </div>
 </article>
 

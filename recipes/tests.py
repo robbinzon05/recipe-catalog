@@ -141,3 +141,29 @@ class RecipeCatalogTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Comment.objects.filter(pk=comment.pk).exists())
+
+    def test_authenticated_user_can_save_and_remove_recipe(self):
+        self.client.login(username='user', password='StrongPass12345')
+        url = reverse('toggle_saved_recipe', kwargs={'slug': self.recipe.slug})
+
+        response = self.client.post(url)
+        self.assertRedirects(response, self.recipe.get_absolute_url())
+        self.assertTrue(self.user.saved_recipes.filter(pk=self.recipe.pk).exists())
+
+        self.client.post(url)
+        self.assertFalse(self.user.saved_recipes.filter(pk=self.recipe.pk).exists())
+
+    def test_guest_cannot_save_recipe(self):
+        url = reverse('toggle_saved_recipe', kwargs={'slug': self.recipe.slug})
+        response = self.client.post(url)
+
+        self.assertRedirects(response, f'{reverse("login")}?next={url}')
+
+    def test_profile_requires_login_and_shows_saved_recipes(self):
+        response = self.client.get(reverse('profile'))
+        self.assertRedirects(response, f'{reverse("login")}?next={reverse("profile")}')
+
+        self.user.saved_recipes.add(self.recipe)
+        self.client.login(username='user', password='StrongPass12345')
+        response = self.client.get(reverse('profile'))
+        self.assertContains(response, self.recipe.title)

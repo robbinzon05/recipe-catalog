@@ -33,6 +33,11 @@ class Recipe(models.Model):
         related_name='recipes',
     )
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)
+    saved_by = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='saved_recipes',
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

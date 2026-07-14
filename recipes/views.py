@@ -57,6 +57,12 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
+@login_required
+def profile(request):
+    saved_recipes = request.user.saved_recipes.select_related('category').order_by('-created_at')
+    return render(request, 'recipes/profile.html', {'saved_recipes': saved_recipes})
+
+
 def recipe_list(request):
     query = request.GET.get('q', '').strip()
     recipes = Recipe.objects.select_related('category')
@@ -123,6 +129,21 @@ def recipe_detail(request, slug):
         'comments': recipe.comments.all(),
     }
     return render(request, 'recipes/recipe_detail.html', context)
+
+
+@login_required
+def toggle_saved_recipe(request, slug):
+    if request.method != 'POST':
+        return redirect('recipe_detail', slug=slug)
+
+    recipe = get_object_or_404(Recipe, slug=slug)
+    if recipe.saved_by.filter(pk=request.user.pk).exists():
+        recipe.saved_by.remove(request.user)
+        messages.success(request, 'Рецепт удален из сохраненных.')
+    else:
+        recipe.saved_by.add(request.user)
+        messages.success(request, 'Рецепт сохранен в личном кабинете.')
+    return redirect(recipe.get_absolute_url())
 
 
 @login_required
